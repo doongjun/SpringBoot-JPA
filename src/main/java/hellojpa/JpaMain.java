@@ -18,41 +18,16 @@ public class JpaMain {
 
         try {
             /**
-             * 생성
+             * 트랜잭션을 지원하는 쓰기지연
              */
-//            Member member = new Member();
-//            member.setId(2L);
-//            member.setName("HelloB");
-//            em.persist(member);
-
-            /**
-             * 검색
-             */
-            //단건
-            Member findMember = em.find(Member.class, 1L);
-//            System.out.println("findMember.id : " + findMember.getId());
-//            System.out.println("findMember.name : " + findMember.getName());
-
-            //다건
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(8)
-                    .getResultList();
-            for(Member member : result) {
-                System.out.println("member.id : " + member.getId());
-                System.out.println("member.name : " + member.getName());
-            }
-
-            /**
-             * 수정
-             */
-//            findMember.setName("Hello World");
-
-            /**
-             * 삭제
-             */
-//            em.remove(findMember);
-
+            Member member1 = new Member(150L, "A");
+            Member member2 = new Member(160L, "B");
+            
+            em.persist(member1);
+            em.persist(member2);
+            // 여기까지 INSERT SQL을 DB에 보내지 않는다.
+            
+            // 커밋하는 순간 DB에 INSERT SQL을 보낸다
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
