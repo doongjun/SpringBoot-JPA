@@ -18,16 +18,11 @@ public class JpaMain {
 
         try {
             /**
-             * 트랜잭션을 지원하는 쓰기지연
+             * 엔티티 수정 변경 감지
              */
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(160L, "B");
-            
-            em.persist(member1);
-            em.persist(member2);
-            // 여기까지 INSERT SQL을 DB에 보내지 않는다.
-            
-            // 커밋하는 순간 DB에 INSERT SQL을 보낸다
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZZ");
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
