@@ -17,12 +17,6 @@ public class JpaMain {
         tx.begin();
 
         try {
-            /**
-             * 엔티티 수정 변경 감지
-             */
-            Member member = em.find(Member.class, 150L);
-            member.setName("ZZZZZ");
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
