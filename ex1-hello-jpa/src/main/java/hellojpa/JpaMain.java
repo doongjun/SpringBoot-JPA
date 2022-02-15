@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class JpaMain {
 
@@ -17,25 +18,14 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            Member member = new Member();
-            member.setUsername("dongjun");
-            member.setTeam(team);
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member m = em.find(Member.class, member.getId());
-            System.out.println("m = " + m.getTeam().getClass());
-
-            System.out.println("=========");
-            m.getTeam().getName(); //초기화
-            System.out.println("=========");
+            em.persist(parent);
 
             tx.commit();
         } catch (Exception e) {
