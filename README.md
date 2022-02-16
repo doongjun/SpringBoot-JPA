@@ -1,3 +1,3 @@
 # TIL
 
-# 김동준
+## Today I Learned
