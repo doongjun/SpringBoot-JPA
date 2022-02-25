@@ -20,15 +20,10 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
-
-            // 다건 조회
-            List<Member> resultList = query1.getResultList();
-            // 단건 조회
-            Member result = query1.getSingleResult();
-
-            TypedQuery<String> query2 = em.createQuery("select m.username from Member m", String.class);
-            Query query3 = em.createQuery("select m.username, m.age from Member m");
+            Member result = em.createQuery("select m from Member m where m.username = :username", Member.class)
+                .setParameter("username", "member1")
+                .getSingleResult();
+            System.out.println("result = " + result.getUsername());
 
             tx.commit();
         } catch (Exception e) {
