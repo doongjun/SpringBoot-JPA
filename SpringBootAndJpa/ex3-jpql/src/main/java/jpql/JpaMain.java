@@ -1,7 +1,6 @@
 package jpql;
 
 import javax.persistence.*;
-import java.util.List;
 
 public class JpaMain {
 
