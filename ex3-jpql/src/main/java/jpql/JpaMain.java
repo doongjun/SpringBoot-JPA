@@ -20,8 +20,9 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername(null);
             member.setAge(10);
+            member.setType(MemberType.ADMIN);
 
             member.setTeam(team);
 
@@ -30,10 +31,26 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m from Member m left join m.team t on t.name = 'teamA'";
+            String query =
+                    "select " +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end " +
+                    "from Member m";
 
-            List<Member> result = em.createQuery(query, Member.class)
-                .getResultList();
+//            String query = "select coalesce(m.username, '이름없음') as username " +
+//                    "from Member m";
+
+//            String query = "select nullif(m.username, '관리자') as username " +
+//                             "from Member m";
+
+            List<String> result = em.createQuery(query, String.class)
+                    .getResultList();
+
+            for (String s : result) {
+                System.out.println("s = " + s);
+            }
 
             tx.commit();
         } catch (Exception e) {
