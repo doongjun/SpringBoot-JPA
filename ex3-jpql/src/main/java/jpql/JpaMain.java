@@ -38,16 +38,16 @@ public class JpaMain {
             member3.setTeam(teamB);
             em.persist(member3);
 
-            em.flush();
+            //flush() 자동 호출 (commit, query, 강제)
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                            .executeUpdate();
+            System.out.println("member1.age = " + member1.getAge());
+            System.out.println("=== clear ===");
+            // 벌크연산 수행 후 영속성 컨텍스트 초기화
             em.clear();
 
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "member1")
-                    .getResultList();
-
-            for(Member member : resultList) {
-                System.out.println("member = " + member);
-            }
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("member1.age = " + findMember.getAge());
 
             tx.commit();
         } catch (Exception e) {
